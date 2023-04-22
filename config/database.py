@@ -1,5 +1,8 @@
+from motor.motor_asyncio import AsyncIOMotorClient
+from odmantic import AIOEngine
 
+from util.config import params
+from util.util import Util
 
-nosql_client = AsyncIOMotorClient(f'mongodb+srv://{settings.cluster_user}:{settings.cluster_password}@{settings.cluster_name}/{settings.cluster_db_name}?retryWrites=true&w=majority')
-nosql_engine = AIOEngine(motor_client=nosql_client,
-                             database=settings.cluster_db_name)
+nosql_client = AsyncIOMotorClient(Util().get_database_url())
+nosql_engine = AIOEngine(client=nosql_client,database=params.db_name)

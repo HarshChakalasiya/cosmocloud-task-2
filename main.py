@@ -13,7 +13,10 @@ from util.context_vars import request_id_contextvar
 app = FastAPI(
     title="CosmosCloud Task 2 Docs",
     description="",
-    version="0.1.0"
+    version="0.1.0",
+    docs_url="/cosmocloud/v1/docs",
+    redoc_url="/cosmocloud/v1/redoc",
+    openapi_url="/cosmocloud/v1/openapi.json"
     )
 
 origins = ["*"]
@@ -62,4 +65,4 @@ async def project_middleware(request: Request, call_next: RequestResponseEndpoin
             logger.info("Request ended")
 
 
-path_prefix ="/cosmocloud-task-2/v1"
+path_prefix ="/cosmocloud/v1"
