@@ -6,7 +6,7 @@ class UserModel(Model):
     name: str = Field(default=None, index=True)
     email: str = Field(default=None)
     active: bool = Field(default=False)
-    created_at: int = Field(default=None, alias="createdAt")
+    created_at: int = Field(default=None, key_name="createdAt")
 
     class Config:
         collection = "users"

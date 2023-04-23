@@ -10,17 +10,16 @@ class UserCore:
         self.db_engine = nosql_engine
         self.__user_collection = nosql_engine.get_collection(UserModel)
 
-    async def save_user(self, user_model: UserModel):
+    async def _save_user(self, user_model: UserModel):
         await self.db_engine.save(user_model)
         return
 
-    async def get_user_by_id(self, user_id: str):
+    async def _get_user_by_id(self, user_id: str):
         user = await self.__user_collection.find_one({"_id": user_id})
         return user
 
     async def _search_users(self, command: SearchUsersCommand) -> SearchResult:
         filters = await self.__search_users_filter(command)
-        # total = self.__user_collection.find(filters).count()
         total = await self.__user_collection.count_documents(filters)
         users = await self.__search_users_pagination(command, filters)
         return SearchResult(

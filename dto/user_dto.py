@@ -26,6 +26,9 @@ class CreateUserCommand(BaseModel):
 class CreateUserResponse(ResponseState):
     data: Optional[UserState] = None
 
+class FetchUserResponse(ResponseState):
+    data: Optional[UserState] = None
+
 
 class SearchUsersFilterCommand(BaseModel):
     name: Optional[str] = None
@@ -39,7 +42,7 @@ class SearchUsersCommand(BaseModel):
 
 class SearchUsersState(BaseModel):
     total: Optional[int] = 0
-    results: List[dict] = []
+    results: List[UserState] = []
 
 
 class SearchUsersResponse(ResponseState):

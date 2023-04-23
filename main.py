@@ -10,6 +10,7 @@ from starlette.responses import JSONResponse
 from logger import logger
 from routers.user_router import user_router
 from util.context_vars import request_id_contextvar
+from util.exceptions.application_exception import ApplicationException
 
 app = FastAPI(
     title="CosmosCloud Task 2 Docs",
@@ -65,6 +66,12 @@ async def project_middleware(request: Request, call_next: RequestResponseEndpoin
         finally:
             logger.info("Request ended")
 
+@app.exception_handler(ApplicationException)
+async def application_exception_handler(request: Request, exc: ApplicationException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        errorMessage= exc.errorMessage
+    )
 
 path_prefix ="/cosmocloud/v1"
 app.include_router(user_router, prefix=path_prefix)
