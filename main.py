@@ -68,9 +68,10 @@ async def project_middleware(request: Request, call_next: RequestResponseEndpoin
 
 @app.exception_handler(ApplicationException)
 async def application_exception_handler(request: Request, exc: ApplicationException):
+    response= {"statusCode": exc.status_code, "data": None, "error": exc.message}
     return JSONResponse(
         status_code=exc.status_code,
-        errorMessage= exc.errorMessage
+        content=response
     )
 
 path_prefix ="/cosmocloud/v1"
