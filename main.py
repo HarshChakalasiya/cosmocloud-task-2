@@ -8,6 +8,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
 from logger import logger
+from routers.user_router import user_router
 from util.context_vars import request_id_contextvar
 
 app = FastAPI(
@@ -66,3 +67,4 @@ async def project_middleware(request: Request, call_next: RequestResponseEndpoin
 
 
 path_prefix ="/cosmocloud/v1"
+app.include_router(user_router, prefix=path_prefix)
