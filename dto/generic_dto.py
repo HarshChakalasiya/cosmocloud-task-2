@@ -11,3 +11,6 @@ class ResponseState(BaseModel):
 class SearchResult(BaseModel):
     total: int = 0
     records: List = []
+
+class ActionResult(ResponseState):
+    data: bool = False

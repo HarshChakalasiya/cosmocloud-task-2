@@ -23,10 +23,7 @@ class CreateUserCommand(BaseModel):
         return Validator().email_validator(value)
 
 
-class CreateUserResponse(ResponseState):
-    data: Optional[UserState] = None
-
-class FetchUserResponse(ResponseState):
+class UserResponse(ResponseState):
     data: Optional[UserState] = None
 
 

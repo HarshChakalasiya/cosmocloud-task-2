@@ -1,7 +1,7 @@
 from core.user_core import UserCore
 from dto.generic_dto import SearchResult
-from dto.user_dto import CreateUserCommand, CreateUserResponse, UserState, SearchUsersResponse, SearchUsersCommand, \
-    SearchUsersState, FetchUserResponse
+from dto.user_dto import CreateUserCommand, UserState, SearchUsersResponse, SearchUsersCommand, \
+    SearchUsersState, UserResponse
 from models.user import UserModel
 from util.date_util import DateUtil
 from util.exceptions.application_exception import ApplicationException
@@ -10,22 +10,22 @@ from util.util import Util
 
 class UserService(UserCore):
 
-    async def create_user(self, command: CreateUserCommand)->CreateUserResponse:
+    async def create_user(self, command: CreateUserCommand)->UserResponse:
         user = UserModel(_id=Util().generate_random_id())
         user.name = command.name
         user.email = command.email
         user.active = True
         user.created_at = DateUtil().get_current_timestamp()
         await self._save_user(user)
-        return CreateUserResponse(
+        return UserResponse(
             status_code = 200,
             data = self.convert_to_user_state(user)
         )
 
-    async def fetch_user(self, id: str)->FetchUserResponse:
+    async def fetch_user(self, id: str)->UserResponse:
         user = await self._get_user_by_id(id)
         if user is not None:
-            return FetchUserResponse(
+            return UserResponse(
                 status_code = 200,
                 data = self.convert_to_user_state_by_json(user)
             )

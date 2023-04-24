@@ -8,17 +8,27 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
 from logger import logger
+from routers.organisation_router import organisation_router
+from routers.permission_router import permission_router
 from routers.user_router import user_router
 from util.context_vars import request_id_contextvar
 from util.exceptions.application_exception import ApplicationException
 
+
+tags_metadata= [
+    {
+        "name": "permissions",
+        "description": "Please use the following value for permission type.  **READ(0), WRITE(1),ADMIIN(2)**"
+    }
+]
 app = FastAPI(
     title="CosmosCloud Task 2 Docs",
     description="",
     version="0.1.0",
     docs_url="/cosmocloud/v1/docs",
     redoc_url="/cosmocloud/v1/redoc",
-    openapi_url="/cosmocloud/v1/openapi.json"
+    openapi_url="/cosmocloud/v1/openapi.json",
+    openapi_tags=tags_metadata
     )
 
 origins = ["*"]
@@ -68,7 +78,7 @@ async def project_middleware(request: Request, call_next: RequestResponseEndpoin
 
 @app.exception_handler(ApplicationException)
 async def application_exception_handler(request: Request, exc: ApplicationException):
-    response= {"statusCode": exc.status_code, "data": None, "error": exc.message}
+    response= {"statusCode": exc.status_code, "data": exc.args, "error": exc.message}
     return JSONResponse(
         status_code=exc.status_code,
         content=response
@@ -76,3 +86,5 @@ async def application_exception_handler(request: Request, exc: ApplicationExcept
 
 path_prefix ="/cosmocloud/v1"
 app.include_router(user_router, prefix=path_prefix)
+app.include_router(organisation_router, prefix=path_prefix)
+app.include_router(permission_router, prefix=path_prefix)
