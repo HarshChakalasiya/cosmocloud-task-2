@@ -1,7 +1,7 @@
 from core.permission_core import PermissionCore
 from dto.generic_dto import ActionResult
 from dto.permission_dto import CreatePermissionCommand, PermissionResponse, PermissionState, \
-    UpdatePermissionByUserIdOrgIdCommand, UpdatePermissionByIdCommand
+     UpdatePermissionCommand
 from models.permissions import PermissionModel
 from util.date_util import DateUtil
 from util.exceptions.application_exception import ApplicationException
@@ -32,8 +32,8 @@ class PermissionService(PermissionCore):
         else:
             raise ApplicationException(status_code=400, message="User or Org not found")
 
-    async def update_permission_by_user_id_org_id(self, command: UpdatePermissionByUserIdOrgIdCommand)->PermissionResponse:
-        permission = await self._fetch_permission_by_user_id_org_id(user_id=command.user_id, org_id=command.org_id)
+    async def update_permission_by_user_id_org_id(self, user_id:str, org_id:str,command: UpdatePermissionCommand)->PermissionResponse:
+        permission = await self._fetch_permission_by_user_id_org_id(user_id=user_id, org_id=org_id)
         if permission is not None:
             permission = self.convert_to_permission_state_by_json_response(permission)
             permission.type = command.type
@@ -46,7 +46,7 @@ class PermissionService(PermissionCore):
         else:
             raise ApplicationException(status_code=404, message="Permission not found")
 
-    async def update_permission_by_id(self, permission_id: str, command: UpdatePermissionByIdCommand)->PermissionResponse:
+    async def update_permission_by_id(self, permission_id: str, command: UpdatePermissionCommand)->PermissionResponse:
         permission = await self._fetch_permission_by_id(permission_id)
         if permission is not None:
             permission = self.convert_to_permission_state_by_json_response(permission)

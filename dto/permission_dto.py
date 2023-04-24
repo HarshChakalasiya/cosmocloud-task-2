@@ -19,12 +19,7 @@ class CreatePermissionCommand(BaseModel):
     type: PermissionType
 
 
-class UpdatePermissionByUserIdOrgIdCommand(BaseModel):
-    user_id: str = None
-    org_id: str = None
-    type: PermissionType
-
-class UpdatePermissionByIdCommand(BaseModel):
+class UpdatePermissionCommand(BaseModel):
     type: PermissionType
 
 class PermissionResponse(ResponseState):
